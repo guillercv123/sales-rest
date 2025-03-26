@@ -2,9 +2,8 @@
   "name": "sale-rest",
   "version": "1.0.0",
   "main": "index.js",
-  "type": "module",
   "scripts": {
-    "dev": "nodemon --watch src --ext js,mjs,json --exec node src/server.js",
+    "dev": "nodemon src/server.ts",
     "build": "tsc",
     "start": "node dist/app.js"
   },
@@ -22,9 +21,12 @@
     "postgres": "^3.4.5"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.1",
     "@types/node": "^22.13.13",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.8.2"
   }
