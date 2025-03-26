@@ -19,8 +19,8 @@ export const createUser = async (req:any, res:any) => {
         }
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
-        const inserted = await insertUser(name,hashedPassword, email);
-        res.status(201).json(inserted[0]);
+        const user = await insertUser(name,hashedPassword, email);
+        res.status(201).json({ message: 'Usuario registrado correctamente.', user});
     } catch (err:any) {
         res.status(500).json({ error: err.message });
     }
