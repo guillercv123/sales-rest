@@ -6,6 +6,7 @@ import {
     updatePasswordUserByEmail
 } from '../services/user.service';
 import bcrypt from "bcrypt";
+import {MESSAGES} from "../constants/message";
 
 export const getUsers = async (req:any, res:any) => {
     try {
@@ -21,16 +22,16 @@ export const createUser = async (req:any, res:any) => {
     try {
         const existingUser = await getUserByName(name);
         if (existingUser && existingUser.length > 0) {
-            return res.status(400).json({ error: 'El nombre de usuario ya está registrado' });
+            return res.status(400).json({ error: MESSAGES.USERNAME_TAKEN });
         }
         const existingEmail = await getUserByEmail(email);
         if (existingEmail && existingEmail.length > 0) {
-            return res.status(400).json({ error: '"El correo electrónico ya está registrado. Si ya tienes una cuenta, podés intentar recuperar tu contraseña'});
+            return res.status(400).json({ error: MESSAGES.EMAIL_ALREADY_REGISTERED});
         }
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
         const user = await insertUser(name,hashedPassword, email);
-        res.status(201).json({ message: 'Usuario registrado correctamente.', user});
+        res.status(201).json({ message: MESSAGES.USER_REGISTERED_SUCCESS, user});
     } catch (err:any) {
         res.status(500).json({ error: err.message });
     }
@@ -42,7 +43,7 @@ export const updatePasswordUser = async (req:any , res:any) => {
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
         const user = await updatePasswordUserByEmail(email,hashedPassword);
-        res.status(200).json({ message: 'Usuario actualizado correctamente.', user});
+        res.status(200).json({ message: MESSAGES.USER_UPDATED_SUCCESS, user});
     }catch (err:any) {
         res.status(500).json({ error: err.message });
     }
