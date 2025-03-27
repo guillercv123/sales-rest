@@ -19,6 +19,23 @@ export const insertUser = async (
     `;
 };
 
+export const updatePasswordUserByEmail = async (
+    email: string,
+    password: string
+): Promise<User[]> => {
+    return sql<User[]>`
+        UPDATE sales_bd."user"
+        SET password_user = ${password}
+        WHERE email_user = ${email}
+            RETURNING *;
+    `;
+};
+
+export const getUserByEmail = async (email:string): Promise<User[]> => {
+    return sql`SELECT *
+               FROM sales_bd."user"
+               WHERE email_user=${email}`;
+}
 
 export const getUserByName = async (name: string): Promise<User[]> => {
     return sql`SELECT *
