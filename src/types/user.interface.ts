@@ -3,5 +3,5 @@ export interface User {
     name: string;
     email_user: string;
     password_user: string;
-    created_at: Date;
+    created_date: Date;
 }
