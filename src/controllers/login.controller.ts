@@ -1,8 +1,7 @@
 import bcrypt from "bcrypt";
 import { getUserByName } from '../services/user.service';
 import {MESSAGES} from "../constants/message";
-
-
+import jwt from 'jsonwebtoken';
 
 export const getUser = async (req:any, res:any) => {
     const { name, password } = req.body;
@@ -19,6 +18,11 @@ export const getUser = async (req:any, res:any) => {
         if (!isMatch) {
             return res.status(401).json({ error: MESSAGES.INCORRECT_PASSWORD });
         }
+        // const payload = {
+        //     userId: user[0].id,
+        //     username: user[0].name,
+        // };
+        // const token = jwt.sign(payload, process.env.JWT_SECRET as string, { expiresIn: '1h' });
 
         res.json({ message: MESSAGES.LOGIN_SUCCESS, user });
     } catch (err:any) {
