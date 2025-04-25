@@ -6,5 +6,6 @@ export interface IClientReq extends IPersistence{
     email: string;
     phone: string;
     idTypeDocument: number;
+    numberDocument: string;
     idGenero: number;
 }

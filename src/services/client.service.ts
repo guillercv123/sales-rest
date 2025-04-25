@@ -9,8 +9,8 @@ export const createClient = async (req: IClientReq): Promise<ClientResp[]> => {
     const conn = await connection;
 
     const [result]: any = await conn.execute(
-        'INSERT INTO client (full_name, surname, email, phone, id_type_document, create_user,create_date,id_genero) VALUES (?,?,?,?,?,?,?,?);',
-        [req.fullName, req.surname, req.email, req.phone, req.idTypeDocument, req.createUser, toMySQLDateTime(req.createDate), req.idGenero]
+        'INSERT INTO client (full_name, surname, email, phone, id_type_document,number_document, create_user,create_date,id_genero) VALUES (?,?,?,?,?,?,?,?,?);',
+        [req.fullName, req.surname, req.email, req.phone, req.idTypeDocument,req.numberDocument, req.createUser, toMySQLDateTime(req.createDate), req.idGenero]
     );
     const insertedId = result.insertId;
 
@@ -21,6 +21,7 @@ export const createClient = async (req: IClientReq): Promise<ClientResp[]> => {
             c.surname,
             c.email,
             c.phone,
+            c.number_document,
             td.description AS description_type_document,
             g.description AS description_genero,
             c.create_user,
@@ -34,4 +35,24 @@ export const createClient = async (req: IClientReq): Promise<ClientResp[]> => {
 
     // @ts-ignore
     return plainToInstance(ClientResp, rows[0], { excludeExtraneousValues: true });
+}
+
+export const getClients = async () => {
+    const conn = await connection;
+    const [result]: any[] = await conn.execute(
+        `SELECT      
+                c.id,
+                c.full_name,
+                c.surname,
+                c.email,
+                c.phone,
+                c.number_document,
+                td.description AS description_type_document,
+                g.description AS description_genero,
+                c.create_user,
+                c.create_date
+                FROM client c
+                JOIN type_document td ON td.id = c.id_type_document
+                JOIN genero g ON g.id = c.id_genero`);
+    return plainToInstance(ClientResp, result, { excludeExtraneousValues: true });
 }
