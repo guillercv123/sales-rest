@@ -9,4 +9,5 @@ export const MESSAGES = {
     USER_NOT_FOUND: "Usuario no encontrado",
     INCORRECT_PASSWORD: "Contraseña incorrecta",
     LOGIN_SUCCESS: "Login exitoso",
+    CLIENT_REGISTERED_SUCCESS: "Cliente registrado correctamente.",
 };
