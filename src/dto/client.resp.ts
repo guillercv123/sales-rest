@@ -1,4 +1,3 @@
-// src/dto/client.resp.ts
 import { Expose,Transform } from 'class-transformer';
 import {IPersistence} from "../types/persistence.interface";
 

@@ -10,4 +10,9 @@ export const MESSAGES = {
     INCORRECT_PASSWORD: "Contraseña incorrecta",
     LOGIN_SUCCESS: "Login exitoso",
     CLIENT_REGISTERED_SUCCESS: "Cliente registrado correctamente.",
+    TYPE_DOCUMENT : {
+        TYPE_DOCUMENT_REGISTERED_SUCCESS: "Tipo de documento registrado correctamente.",
+        TYPE_DOCUMENT_UPDATED_SUCCESS: "Tipo de documento actualizado correctamente.",
+        DESACTIVE: "Tipo de documento eliminado correctamente"
+    }
 };

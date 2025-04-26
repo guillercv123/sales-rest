@@ -5,4 +5,5 @@ export interface IPersistence{
     updateDate?: string;
     deleteUser?: string;
     deleteDate?: string;
+    active?: boolean;
 }
