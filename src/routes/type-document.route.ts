@@ -1,9 +1,9 @@
 import {Router} from "express";
 import {TypeDocumentController} from "../controllers/type-document.controller";
-import {TypeDocumentService} from "../services/type-document.service";
-const router = Router();
-const controller = new TypeDocumentController(new TypeDocumentService);
+import {container} from "tsyringe";
 
+const router = Router();
+const controller = container.resolve(TypeDocumentController);
 router.get(
     "/",
     controller.getAll.bind(controller)
