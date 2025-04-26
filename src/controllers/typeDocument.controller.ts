@@ -4,7 +4,11 @@ import {autoInjectable} from "tsyringe";
 @autoInjectable()
 export class TypeDocumentController {
     constructor(private readonly service: TypeDocumentService) {}
-
+    /**
+     * Obtiene todos los tipo de documentos
+     * @param req
+     * @param res
+     */
     async getAll(req:any, res:any) {
         try {
             const typeDocuments = await this.service.getAll();
@@ -13,7 +17,11 @@ export class TypeDocumentController {
             res.status(500).json({error:err})
         }
     }
-
+    /**
+     * Crea un nuevo tipo de documento
+     * @param req
+     * @param res
+     */
     async createTypeDocument (req:any, res:any) {
         const {description} = req.body;
         try{
@@ -28,6 +36,11 @@ export class TypeDocumentController {
             });
         }
     }
+    /**
+     * Actualiza un tipo de documento
+     * @param req
+     * @param res
+     */
     async updateTypeDocument(req:any, res:any){
         const {description, id} = req.body;
         try{
@@ -42,6 +55,12 @@ export class TypeDocumentController {
             })
         }
     }
+
+    /**
+     * Desactiva un tipo de documento con eliminacion logica cambia de 1 a 0
+     * @param req
+     * @param res
+     */
     async desactiveTypeDocument(req:any, res:any) {
         const {id} = req.body;
         try{

@@ -1,9 +1,9 @@
 import 'reflect-metadata';
-import { TypeDocumentController } from './typeDocument.controller';
+import { TypeDocumentController } from '../typeDocument.controller';
 import { Request, Response } from 'express';
-import {TypeDocumentService} from "../services/typeDocument.service";
+import {TypeDocumentService} from "../../services/typeDocument.service";
 
-jest.mock('../db/mysql', () => {
+jest.mock('../../db/mysql', () => {
     return {
         __esModule: true,
         default: Promise.resolve({

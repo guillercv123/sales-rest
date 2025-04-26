@@ -6,6 +6,9 @@ import {ITypeDocumentRepository} from "./interfaces/type-document-repository.int
 
 @singleton()
 export class TypeDocumentRepository implements ITypeDocumentRepository{
+    /**
+     * Obtiene todos los documentos de tipo.
+     */
     async findAll(): Promise<ITypeDocument[]> {
         const conn = await connection;
         const [rows] = await conn.query<RowDataPacket[]>(
@@ -14,7 +17,9 @@ export class TypeDocumentRepository implements ITypeDocumentRepository{
         );
         return rows as ITypeDocument[];
     }
-
+    /**
+     * Crea un nuevo tipo de documento.
+     */
     async create(description: string): Promise<number> {
         const conn = await connection;
         const [result] = await conn.execute<ResultSetHeader>(
@@ -23,7 +28,9 @@ export class TypeDocumentRepository implements ITypeDocumentRepository{
         );
         return result.insertId;
     }
-
+    /**
+     * Actualiza un tipo de documento existente.
+     */
     async update(id: number, description: string): Promise<number> {
         const conn = await connection;
         const [result] = await conn.execute<ResultSetHeader>(
@@ -32,7 +39,9 @@ export class TypeDocumentRepository implements ITypeDocumentRepository{
         );
         return result.affectedRows;
     }
-
+    /**
+     * Desactiva un tipo de documento.
+     */
     async deactivate(id: number): Promise<number> {
         const conn = await connection;
         const [result] = await conn.execute<ResultSetHeader>(
