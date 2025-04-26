@@ -1,5 +1,5 @@
 import {Router} from "express";
-import {TypeDocumentController} from "../controllers/type-document.controller";
+import {TypeDocumentController} from "../controllers/typeDocument.controller";
 import {container} from "tsyringe";
 
 const router = Router();

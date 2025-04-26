@@ -1,5 +1,5 @@
 
-import { ITypeDocument } from "../../types/type-document.interface";
+import { ITypeDocument } from "../../types/typeDocument.interface";
 
 export interface ITypeDocumentService {
     getAll(): Promise<ITypeDocument[]>;

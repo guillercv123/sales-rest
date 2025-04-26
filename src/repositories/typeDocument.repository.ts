@@ -1,6 +1,6 @@
 import connection from "../db/mysql";
 import {singleton} from "tsyringe";
-import { ITypeDocument } from "../types/type-document.interface";
+import { ITypeDocument } from "../types/typeDocument.interface";
 import { ResultSetHeader, RowDataPacket } from "mysql2";
 import {ITypeDocumentRepository} from "./interfaces/type-document-repository.interface";
 

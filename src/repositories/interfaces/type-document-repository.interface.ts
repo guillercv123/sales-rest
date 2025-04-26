@@ -1,6 +1,6 @@
 // src/repositories/interfaces/type-document-repository.interface.ts
 
-import { ITypeDocument } from "../../types/type-document.interface";
+import { ITypeDocument } from "../../types/typeDocument.interface";
 
 export interface ITypeDocumentRepository {
     findAll(): Promise<ITypeDocument[]>;
