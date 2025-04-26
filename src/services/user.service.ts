@@ -1,46 +1,30 @@
 import {User} from "../types/user.interface";
-import connection from "../db/mysql";
+import {UserRepository} from "../repositories/user.repository";
+import {inject, injectable} from "tsyringe";
+import {IUserService} from "./interfaces/user-service.interface";
+@injectable()
+export class UserService implements IUserService{
+    constructor(
+        @inject(UserRepository)
+        private readonly repository:UserRepository) {
+    }
+    getAllUsers(){
+        return this.repository.getAllUsers();
+    }
 
-export const getAllUsers = async (): Promise<User[]> => {
-    const [rows] = await (await connection).execute('SELECT * FROM user');
-    return rows as User[];
-};
+    create(name: string, password: string, email: string){
+        return this.repository.create(name, password,email);
+    }
 
-export const insertUser = async (
-    name: string,
-    password: string,
-    email: string
-): Promise<User[]> => {
-    const [rows] = await (await connection).execute(
-        'INSERT INTO user (name, password_user, email_user) VALUES (?, ?, ?);',
-        [name, password, email]
-    );
-    return rows as User[];
-};
+    updatePasswordUserByEmail(email: string, password: string){
+        return this.repository.updatePasswordUserByEmail(email, password);
+    }
 
-export const updatePasswordUserByEmail = async (
-    email: string,
-    password: string
-): Promise<User[]> => {
-    const [rows] = await (await connection).execute(
-        'UPDATE user SET password_user = ? WHERE email_user = ?;',
-        [password, email]
-    );
-    return rows as User[];
-};
+    getUserByEmail(email: string){
+        return this.repository.getUserByEmail(email);
+    }
 
-export const getUserByEmail = async (email: string): Promise<User[]> => {
-    const [rows] = await (await connection).execute(
-        'SELECT * FROM user WHERE email_user = ?',
-        [email]
-    );
-    return rows as User[];
-};
-
-export const getUserByName = async (name: string): Promise<User[]> => {
-    const [rows] = await (await connection).execute(
-        'SELECT * FROM user WHERE name = ?',
-        [name]
-    );
-    return rows as User[];
-};
+    getUserByName(name: string): Promise<User[]> {
+        return this.repository.getUserByName(name);
+    }
+}

@@ -1,7 +1,16 @@
 import { Router } from 'express';
-import {insertClient, listClient} from "../controllers/client.controller";
+import {ClientController} from "../controllers/client.controller";
+import {container} from "tsyringe";
 
 const router = Router();
-router.post('/', insertClient);
-router.get('/', listClient);
+const controller = container.resolve(ClientController);
+router.post(
+    "/",
+    controller.create.bind(controller)
+);
+
+router.get(
+    "/",
+    controller.findAll.bind(controller)
+);
 export default router;

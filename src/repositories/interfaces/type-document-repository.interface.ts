@@ -10,14 +10,18 @@ export interface ITypeDocumentRepository {
     findAll(): Promise<ITypeDocument[]>;
     /**
      * Crea un nuevo tipo documento.
+     * @param description
      */
     create(description: string): Promise<number>;
     /**
      * Actualiza un tipo de documento existente.
+     * @param id
+     * @param description
      */
     update(id: number, description: string): Promise<number>;
     /**
      * Desactiva un tipo de documento.
+     * @param id
      */
     deactivate(id: number): Promise<number>;
 }

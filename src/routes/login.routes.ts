@@ -1,5 +1,7 @@
 import {Router} from "express";
-import { getUser } from '../controllers/login.controller';
+import {container} from "tsyringe";
+import {LoginController} from "../controllers/login.controller";
 const router = Router();
-router.post('/', getUser);
+const controller = container.resolve(LoginController);
+router.post('/', controller.getUser.bind(controller));
 export default router;
