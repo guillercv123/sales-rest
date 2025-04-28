@@ -11,8 +11,8 @@ export class ClientController {
         try {
            const clients = await this.service.findAll();
             res.status(200).json({resp: clients})
-        }catch (err){
-            res.status(500).json({error:err})
+        }catch (err: any){
+            res.status(500).json({ error: err.message });
         }
     }
 
@@ -21,8 +21,8 @@ export class ClientController {
         try {
             const client = await this.service.create(clientReq);
             res.status(201).json({ message: MESSAGES.CLIENT_REGISTERED_SUCCESS, client});
-        }catch (err){
-            res.status(500).json({error:err})
+        }catch (err: any){
+            res.status(500).json({ error: err.message });
         }
     }
 }
