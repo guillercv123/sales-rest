@@ -6,6 +6,7 @@ import ClientRoutes from "./routes/client.routes";
 import LoginRoutes from "./routes/login.routes";
 import UserRoutes from "./routes/user.routes";
 import AuthRoutes from "./routes/auth.routes";
+import GeneroRoute from "./routes/genero.route";
 
 const app = express();
 app.use(cors());
@@ -15,4 +16,5 @@ app.use('/login', LoginRoutes);
 app.use('/auth', AuthRoutes);
 app.use('/client', ClientRoutes);
 app.use('/type-document', TypeDocumentRoute);
+app.use('/genero', GeneroRoute);
 export default app;

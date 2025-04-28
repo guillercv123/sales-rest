@@ -14,5 +14,9 @@ export const MESSAGES = {
         TYPE_DOCUMENT_REGISTERED_SUCCESS: "Tipo de documento registrado correctamente.",
         TYPE_DOCUMENT_UPDATED_SUCCESS: "Tipo de documento actualizado correctamente.",
         DESACTIVE: "Tipo de documento eliminado correctamente"
+    },
+    GENERO: {
+        GENERO_REGISTERED_SUCCESS: "Genero registrado correctamente.",
+        GENERO_UPDATED_SUCCESS: "Genero actualizado correctamente.",
     }
 };

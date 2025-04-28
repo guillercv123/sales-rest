@@ -1,18 +1,18 @@
 import {IGenero} from "../../types/genero.interface";
 /**
- * Interfaz para el repositorio de Genero.
+ * Interfaz para el servicios de Genero.
  */
-export interface IGeneroRepository {
+export interface IGeneroService{
     /**
      * Obtiene todos los generos
      */
-    fillAll():Promise<IGenero[]>;
+    findAll():Promise<IGenero[]>;
     /**
      * Crea un genero
      * @param description
-     * @param create_user
+     * @param createUser
      */
-    create(description: string,create_user: string): Promise<IGenero>;
+    create(description: string,createUser: string): Promise<IGenero>;
     /**
      * Actualiza un genero
      * @param id
@@ -25,5 +25,5 @@ export interface IGeneroRepository {
      * @param id
      * @param userDelete
      */
-    desactive(id: number, userDelete:string): Promise<number>;
+    desactive(id: number,userDelete:string): Promise<number>;
 }

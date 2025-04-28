@@ -20,7 +20,7 @@ export class ClientController {
         const  clientReq  = req.body;
         try {
             const client = await this.service.create(clientReq);
-            res.status(201).json({ message: MESSAGES.CLIENT_REGISTERED_SUCCESS, client});
+            res.status(201).json({ message: MESSAGES.CLIENT_REGISTERED_SUCCESS, resp: client});
         }catch (err: any){
             res.status(500).json({ error: err.message });
         }
