@@ -11,17 +11,20 @@ export interface ITypeDocumentService {
     /**
      * Crea un nuevo tipo de documento.
      * @param description Descripción del documento.
+     * @param createUser
      */
-    create(description: string): Promise<number>;
+    create(description: string,createUser: string): Promise<ITypeDocument>;
     /**
      * Actualiza un tipo de documento existente.
      * @param id ID del documento a actualizar.
      * @param description Nueva descripción del documento.
+     * @param updateUser
      */
-    update(id: number, description: string): Promise<number>;
+    update(id: number, description: string,updateUser: string): Promise<ITypeDocument>;
     /**
      * Desactiva un tipo de documento.
      * @param id ID del documento a desactivar.
+     * @param deleteUser
      */
-    deactivate(id: number): Promise<number>;
+    deactivate(id: number, deleteUser: string): Promise<number>;
 }

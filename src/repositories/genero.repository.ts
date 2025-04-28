@@ -68,7 +68,8 @@ export class GeneroRepository implements IGeneroRepository{
     async desactive(id:number,userDelete:string) {
         const conn = await this.connection.getConnection();
         const [result]:any = await conn.execute(
-            `UPDATE genero SET active = 0 , delete_user= ?, delete_date = ?  WHERE id = ? `, [userDelete,new Date(),id]);
+            `UPDATE genero SET active = 0 , delete_user= ?, delete_date = ?  WHERE id = ? `,
+            [userDelete,new Date(),id]);
         return result.affectedRows;
     }
 }

@@ -16,19 +16,19 @@ export class TypeDocumentService implements ITypeDocumentService{
     /**
      * Crea un nuevo tipo documento.
      */
-    async create(description: string): Promise<number> {
-        return this.repository.create(description);
+    async create(description: string,createUser:string): Promise<ITypeDocument> {
+        return this.repository.create(description,createUser);
     }
     /**
      * Actualiza un tipo de documento existente.
      */
-    async update(id: number, description: string): Promise<number> {
-        return this.repository.update(id, description);
+    async update(id: number, description: string, updateUser:string): Promise<ITypeDocument> {
+        return this.repository.update(id, description, updateUser);
     }
     /**
      * Desactiva un tipo de documento.
      */
-    async deactivate(id: number): Promise<number> {
-        return this.repository.deactivate(id);
+    async deactivate(id: number, deleteUser: string): Promise<number> {
+        return this.repository.deactivate(id, deleteUser);
     }
 }

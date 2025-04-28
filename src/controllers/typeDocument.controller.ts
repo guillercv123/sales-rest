@@ -13,8 +13,8 @@ export class TypeDocumentController {
         try {
             const typeDocuments = await this.service.getAll();
             res.status(200).json({resp: typeDocuments})
-        }catch (err){
-            res.status(500).json({error:err})
+        }catch (err:any) {
+            res.status(500).json({error:err.message})
         }
     }
     /**
@@ -23,16 +23,16 @@ export class TypeDocumentController {
      * @param res
      */
     async createTypeDocument (req:any, res:any) {
-        const {description} = req.body;
+        const {description,createUser} = req.body;
         try{
-            const idTypeDocument = await this.service.create(description);
+            const typeDocument = await this.service.create(description,createUser);
             res.status(201).json({
                 message: MESSAGES.TYPE_DOCUMENT.TYPE_DOCUMENT_REGISTERED_SUCCESS,
-                resp: idTypeDocument
+                resp: typeDocument
             })
-        }catch (err) {
+        }catch (err:any) {
             res.status(500).json({
-                error: err
+                error: err.message
             });
         }
     }
@@ -42,16 +42,16 @@ export class TypeDocumentController {
      * @param res
      */
     async updateTypeDocument(req:any, res:any){
-        const {description, id} = req.body;
+        const {id, description, updateUser} = req.body;
         try{
-         const resp = await this.service.update(id, description) === 1;
+         const typeDocument = await this.service.update(id, description, updateUser);
             res.status(200).json({
                 message: MESSAGES.TYPE_DOCUMENT.TYPE_DOCUMENT_REGISTERED_SUCCESS,
-                resp
+                resp: typeDocument
             })
-        }catch (err) {
+        }catch (err:any) {
             res.status(500).json({
-                error: err
+                error: err.message
             })
         }
     }
@@ -62,16 +62,16 @@ export class TypeDocumentController {
      * @param res
      */
     async desactiveTypeDocument(req:any, res:any) {
-        const {id} = req.body;
+        const {id,userDelete} = req.body;
         try{
-            const resp = await this.service.deactivate(id) === 1;
+            const typeDocument = await this.service.deactivate(id,userDelete);
             res.status(200).json({
                 message: MESSAGES.TYPE_DOCUMENT.DESACTIVE,
-                resp
+                resp: typeDocument
             })
-        }catch (err) {
+        }catch (err:any) {
             res.status(500).json({
-                error: err
+                error: err.message
             });
         }
     }
