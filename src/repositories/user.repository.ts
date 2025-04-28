@@ -7,11 +7,20 @@ import {User} from "../types/user.interface";
 export class UserRepository implements IUserRepository{
     constructor(private connection: ConnectionMysql) {
     }
-   async getAllUsers(){
+    /**
+     * Obtiene todos los usuarios.
+     */
+    async getAllUsers(){
         const conn = await this.connection.getConnection();
         const [rows] = await conn.execute('SELECT * FROM user');
         return rows as User[];
     }
+    /**
+     * Crea un usuario nuevo en el sistema
+     * @param name
+     * @param password
+     * @param email
+     */
     async create(name: string, password: string, email: string){
         const conn = await this.connection.getConnection();
         const [rows] = await conn.execute(
@@ -20,6 +29,11 @@ export class UserRepository implements IUserRepository{
         );
         return rows as User[];
     }
+    /**
+     * Actualiza la password si se olvido por el email
+     * @param email
+     * @param password
+     */
     async updatePasswordUserByEmail(email: string, password: string){
         const conn = await this.connection.getConnection();
         const [rows] = await conn.execute(
@@ -28,6 +42,10 @@ export class UserRepository implements IUserRepository{
         );
         return rows as User[];
     }
+    /**
+     *  Obtiene el usuario por el email.
+     * @param email
+     */
     async getUserByEmail(email: string){
         const conn = await this.connection.getConnection();
         const [rows] = await conn.execute(
@@ -36,7 +54,10 @@ export class UserRepository implements IUserRepository{
         );
         return rows as User[];
     }
-
+    /**
+     * Obtiene el usuario por nombre
+     * @param name
+     */
     async getUserByName(name: string){
         const conn = await this.connection.getConnection();
         const [rows] = await conn.execute(

@@ -8,23 +8,41 @@ export class UserService implements IUserService{
         @inject(UserRepository)
         private readonly repository:UserRepository) {
     }
-    getAllUsers(){
+    /**
+     * Obtiene todos los usuarios.
+     */
+    async getAllUsers(){
         return this.repository.getAllUsers();
     }
-
-    create(name: string, password: string, email: string){
+    /**
+     * Crea un usuario nuevo en el sistema
+     * @param name
+     * @param password
+     * @param email
+     */
+    async create(name: string, password: string, email: string){
         return this.repository.create(name, password,email);
     }
-
-    updatePasswordUserByEmail(email: string, password: string){
+    /**
+     * Actualiza la password si se olvido por el email
+     * @param email
+     * @param password
+     */
+    async updatePasswordUserByEmail(email: string, password: string){
         return this.repository.updatePasswordUserByEmail(email, password);
     }
-
-    getUserByEmail(email: string){
+    /**
+     *  Obtiene el usuario por el email.
+     * @param email
+     */
+    async getUserByEmail(email: string){
         return this.repository.getUserByEmail(email);
     }
-
-    getUserByName(name: string): Promise<User[]> {
+    /**
+     * Obtiene el usuario por nombre
+     * @param name
+     */
+    async getUserByName(name: string): Promise<User[]> {
         return this.repository.getUserByName(name);
     }
 }

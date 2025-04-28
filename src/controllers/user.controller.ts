@@ -7,16 +7,24 @@ import {autoInjectable} from "tsyringe";
 @autoInjectable()
 export class UserController{
     constructor(private readonly service: UserService) {}
-
+    /**
+     * Obtiene todos los usuarios
+     * @param req
+     * @param res
+     */
     async getUsers(req:any, res:any) {
         try {
             const users = await this.service.getAllUsers();
-            res.json(users);
+            res.status(200).json({resp:users});
         } catch (err) {
             res.status(500).json({ error: err });
         }
     }
-
+    /**
+     * Crea usuarios nuevos.
+     * @param req
+     * @param res
+     */
     async createUser(req:any, res:any) {
         const { name, password ,email } = req.body;
         try {
@@ -36,7 +44,11 @@ export class UserController{
             res.status(500).json({ error: err.message });
         }
     }
-
+    /**
+     * Actualiza la password del usuario
+     * @param req
+     * @param res
+     */
     async updatePasswordUser(req:any , res:any){
         const { password ,email } = req.body;
         try{
