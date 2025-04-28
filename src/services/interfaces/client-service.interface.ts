@@ -8,7 +8,7 @@ export interface IClientService{
      * Obtiene todos los clientes
      *  @return Promise<ClientResp[]>
      */
-    findAll(): Promise<ClientResp>;
+    findAll(): Promise<ClientResp[]>;
     /**
      *  Crea un cliente
      *  @param req

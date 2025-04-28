@@ -3,13 +3,14 @@ import {ConnectionMysql} from "../db/mysql";
 import {singleton} from "tsyringe";
 import {IClientReq} from "../types/client.interface";
 import {toMySQLDateTime} from "../utils/date.util";
+import {ClientResp} from "../dto/client.resp";
 @singleton()
 export class ClientRepository implements IClientRepository{
     constructor(private readonly connection: ConnectionMysql) {
     }
-   async findAll(): Promise<any[]> {
+   async findAll(): Promise<ClientResp[]> {
         const conn = await this.connection.getConnection();
-           const [result]: any[] = await conn.execute(
+           const [result]:any = await conn.execute(
                `SELECT      
                     c.id,
                     c.full_name,
@@ -24,10 +25,10 @@ export class ClientRepository implements IClientRepository{
                     FROM client c
                     JOIN type_document td ON td.id = c.id_type_document
                     JOIN genero g ON g.id = c.id_genero`);
-           return result;
+           return result as ClientResp[];
     }
 
-    async create(req: IClientReq): Promise<any>{
+    async create(req: IClientReq): Promise<ClientResp>{
         const conn = await this.connection.getConnection();
         const [result]: any = await conn.execute(
         'INSERT INTO client (full_name, surname, email, phone, id_type_document,number_document, create_user,create_date,id_genero) VALUES (?,?,?,?,?,?,?,?,?);',
@@ -53,7 +54,7 @@ export class ClientRepository implements IClientRepository{
             WHERE c.id = ?`,
             [insertedId]
         );
-        return rows;
+        return rows as ClientResp;
     }
 
 }

@@ -6,13 +6,13 @@ import {IClientReq} from "../../types/client.interface";
 export interface IClientRepository {
     /**
      * Obtiene todos los clientes
-     *  @return Promise<any[]>
+     *  @return Promise<ClientResp[]>
      */
     findAll(): Promise<any[]>;
     /**
      *  Crea un cliente
      *  @param req
-     *  @return Promise<ClientResp[]>
+     *  @return Promise<ClientResp>
      */
-    create(req:IClientReq): Promise<any[]>;
+    create(req:IClientReq): Promise<ClientResp>;
 }

@@ -11,10 +11,12 @@ export class ClientService implements IClientService{
         @inject(ClientRepository)
         private readonly repository: ClientRepository) {}
 
-    async findAll(): Promise<ClientResp> {
-        return plainToInstance(ClientResp, this.repository.findAll(), { excludeExtraneousValues: true });
+    async findAll(): Promise<ClientResp[]> {
+        const data = await this.repository.findAll();
+        return plainToInstance(ClientResp, data, { excludeExtraneousValues: true });
     }
-    async create(req: IClientReq) : Promise<ClientResp>{
-        return plainToInstance(ClientResp, this.repository.create(req), { excludeExtraneousValues: true });
+    async create(req: IClientReq) : Promise<ClientResp> {
+        const data = await this.repository.create(req);
+        return plainToInstance(ClientResp, data, { excludeExtraneousValues: true });
     }
 }
