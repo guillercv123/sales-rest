@@ -6,7 +6,7 @@ import {User} from "../../types/user.interface";
 import {MESSAGES} from "../../constants/message";
 import bcrypt from "bcrypt";
 
-jest.mock('bcrypt'); // ¡mockea bcrypt para que no tarde!
+jest.mock('bcrypt');
 
 jest.mock('../../db/mysql', () => {
     return {
@@ -18,7 +18,6 @@ jest.mock('../../db/mysql', () => {
     };
 });
 
-// Mocks
 const mockService = {
     getAllUsers: jest.fn(),
     getUserByName: jest.fn(),

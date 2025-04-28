@@ -21,7 +21,7 @@ export class LoginController {
             if (!isMatch) {
                 return res.status(401).json({ error: MESSAGES.INCORRECT_PASSWORD });
             }
-            res.json({ message: MESSAGES.LOGIN_SUCCESS, user });
+            res.status(200).json({ message: MESSAGES.LOGIN_SUCCESS, user });
         } catch (err:any) {
             res.status(500).json({ error: err.message });
         }

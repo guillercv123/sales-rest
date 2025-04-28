@@ -22,7 +22,8 @@ export class AuthController {
             const code = Math.floor(100000 + Math.random() * 900000).toString();
             await sendEmailWithCode(email, code);
             storeCode(email, code);
-            res.json({ message: MESSAGES.CODE_SENT_SUCCESS });
+
+            res.status(200).json({ message: MESSAGES.CODE_SENT_SUCCESS });
         }catch (err:any) {
             res.status(500).json({ error: err.message });
         }
@@ -41,6 +42,6 @@ export class AuthController {
             return res.status(400).json({ error: "Código incorrecto o expirado" });
         }
 
-        res.json({ message: "Código validado correctamente" });
+        res.status(200).json({ message: "Código validado correctamente" });
     }
 }
