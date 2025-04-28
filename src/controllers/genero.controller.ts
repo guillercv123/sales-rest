@@ -5,7 +5,9 @@ import {MESSAGES} from "../constants/message";
 @autoInjectable()
 export class GeneroController {
     constructor(private readonly generoService: GeneroService) {}
-
+    /**
+     * Obtiene todos los generos
+     */
     async findAll(req:any, res:any){
         try{
             const data = await this.generoService.findAll();
@@ -16,7 +18,11 @@ export class GeneroController {
             res.status(500).json({error: error.message})
         }
     }
-
+    /**
+     * Crea un genero
+     * @param req
+     * @param res
+     */
     async create(req:any, res:any){
         const {description, createUser} = req.body;
         try{
@@ -31,7 +37,11 @@ export class GeneroController {
             res.status(500).json({error: error.message})
         }
     }
-
+    /**
+     * Actualiza un genero
+     * @param req
+     * @param res
+     */
     async update(req:any, res:any){
         const {id, description, updateUser} = req.body;
         try{
@@ -46,7 +56,11 @@ export class GeneroController {
             res.status(500).json({error: error.message})
         }
     }
-
+    /**
+     * Eliminacion logica de un genero
+     * @param req
+     * @param res
+     */
     async desactive(req:any, res:any){
         const {id,userDelete} = req.body;
         try{
