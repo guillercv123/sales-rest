@@ -60,4 +60,14 @@ export class UserController{
             res.status(500).json({ error: err.message });
         }
     }
+
+    async findAllPermissionsUser(req: any, res:any){
+        try {
+            const {userId} = req.body;
+            const permissionUser = await this.service.getPermissionUser(userId);
+            res.status(200).json({resp:permissionUser});
+        } catch (err) {
+            res.status(500).json({ error: err });
+        }
+    }
 }

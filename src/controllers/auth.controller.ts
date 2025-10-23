@@ -44,4 +44,5 @@ export class AuthController {
 
         res.status(200).json({ message: "Código validado correctamente" });
     }
+
 }

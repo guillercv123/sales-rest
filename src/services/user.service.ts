@@ -45,4 +45,8 @@ export class UserService implements IUserService{
     async getUserByName(name: string): Promise<User[]> {
         return this.repository.getUserByName(name);
     }
+
+    async getPermissionUser(userId:number){
+        return this.repository.getPermissionUser(userId);
+    }
 }
