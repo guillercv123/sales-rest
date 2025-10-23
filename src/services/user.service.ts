@@ -42,7 +42,7 @@ export class UserService implements IUserService{
      * Obtiene el usuario por nombre
      * @param name
      */
-    async getUserByName(name: string): Promise<User[]> {
+    async getUserByName(name: string): Promise<any> {
         return this.repository.getUserByName(name);
     }
 

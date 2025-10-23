@@ -79,13 +79,31 @@ export class UserRepository implements IUserRepository{
      * Obtiene el usuario por nombre
      * @param name
      */
-    async getUserByName(name: string) {
+    async getUserByName(name: string):Promise<any> {
         const conn = await this.connection.getConnection();
-        const [rows] = await conn.execute(
-            'SELECT * FROM user WHERE name = ?',
-            [name]
-        );
-        return rows as User[];
+        // @ts-ignore
+        const [rows] = await conn.execute<Row[]>(`
+                  SELECT 
+                    u.id, u.name, u.email_user, u.password_user,
+                    GROUP_CONCAT(DISTINCT r.id ORDER BY r.id SEPARATOR ',')   AS role_ids_csv,
+                    GROUP_CONCAT(DISTINCT r.name ORDER BY r.name SEPARATOR ',') AS role_names_csv
+                  FROM \`user\` u
+                  LEFT JOIN user_roles ur ON ur.user_id = u.id
+                  LEFT JOIN roles r       ON r.id = ur.role_id
+                  WHERE u.name = ?
+                  GROUP BY u.id, u.name, u.email_user, u.password_user
+                  LIMIT 1;
+                `, [name]);
+
+        if (!rows || rows.length === 0) return null;
+        // @ts-ignore
+        const r = rows[0] as Row;
+        const ids   = (r.role_ids_csv   ? r.role_ids_csv.split(',').filter(Boolean).map(Number) : []);
+        const names = (r.role_names_csv ? r.role_names_csv.split(',').filter(Boolean) : []);
+        const roles = ids.map((id: any, i: string | number) => ({ id, name: names[i] ?? '' }));
+
+        const { role_ids_csv, role_names_csv, ...userBase } = r;
+        return { ...(userBase as User), roles };
     }
 
     async getPermissionUser(userId: number): Promise<IPermissionUser> {

@@ -29,5 +29,5 @@ export interface IUserRepository{
      * Obtiene el usuario por nombre
      * @param name
      */
-    getUserByName(name: string):Promise<User[]>;
+    getUserByName(name: string):Promise<any>;
 }
