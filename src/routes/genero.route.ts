@@ -20,7 +20,8 @@ router.put(
 );
 
 router.patch(
-    "/eliminar",
+    "" +
+    "",
     controller.desactive.bind(controller)
 );
 export default router;

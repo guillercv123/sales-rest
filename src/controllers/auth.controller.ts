@@ -29,7 +29,7 @@ export class AuthController {
         }
     }
 
-    validateResetCode(req:any, res:any) {
+   validateResetCode(req:any, res:any) {
         const { email, code } = req.body;
 
         if (!email || !code) {
