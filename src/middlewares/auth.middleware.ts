@@ -1,5 +1,5 @@
-import jwt, { JwtPayload } from 'jsonwebtoken';
-import { Request, Response, NextFunction, RequestHandler } from 'express';
+import jwt, {JwtPayload} from 'jsonwebtoken';
+import {NextFunction, Request, RequestHandler, Response} from 'express';
 
 type AppJwt = JwtPayload & {
     sub: string | number;
@@ -15,15 +15,14 @@ export const authGuard: RequestHandler = (req: Request & { user?: AppJwt }, res:
 
     if (!token) {
         res.status(401).json({ error: 'Missing token' });
-        return; // ✅ retornar void
+        return;
     }
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as AppJwt;
-        (req as any).user = decoded;
-        next(); // ✅ continuar
+        (req as any).user = jwt.verify(token, process.env.JWT_SECRET as string) as AppJwt;
+        next();
     } catch {
         res.status(401).json({ error: 'Invalid or expired token' });
-        return; // ✅ retornar void
+        return;
     }
 };
