@@ -18,5 +18,8 @@ export const MESSAGES = {
     GENERO: {
         GENERO_REGISTERED_SUCCESS: "Genero registrado correctamente.",
         GENERO_UPDATED_SUCCESS: "Genero actualizado correctamente.",
+    },
+    RESOURCE: {
+        RESOURCE_REGISTERED_SUCCESS: "Menú registrado correctamente.",
     }
 };

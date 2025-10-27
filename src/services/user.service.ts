@@ -1,4 +1,3 @@
-import {User} from "../types/user.interface";
 import {UserRepository} from "../repositories/user.repository";
 import {inject, injectable} from "tsyringe";
 import {IUserService} from "./interfaces/user-service.interface";
