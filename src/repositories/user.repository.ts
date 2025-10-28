@@ -11,6 +11,7 @@ type MenuRow = RowDataPacket & {
     menu_name: string | null;
     menu_parent_id: number | null;
     icon: string | null;
+    route:  string | null;
 };
 
 type ButtonRow = RowDataPacket & {
@@ -125,7 +126,8 @@ export class UserRepository implements IUserRepository{
                 menuKey: r.menu_key,
                 menuName: r.menu_name,
                 menuParentId: r.menu_parent_id,
-                icon: r.icon
+                icon: r.icon,
+                route: r.route
             }));
 
             const button: IButton[] = buttonsRS.map(r => ({

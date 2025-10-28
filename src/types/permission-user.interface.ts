@@ -9,6 +9,7 @@ export interface IMenu {
     menuName: string | null;      // display_name puede ser null
     menuParentId: number | null;  // parent_id puede ser null en menús raíz
     icon: string | null;
+    route: string | null;
 }
 
 export interface IButton {
