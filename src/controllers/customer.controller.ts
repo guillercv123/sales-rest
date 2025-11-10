@@ -1,6 +1,6 @@
 import {CustomerService} from "../services/customer.service";
 import {autoInjectable} from "tsyringe";
-import {NextFunction, Request, Response} from 'express';
+import {Request, Response} from 'express';
 import {MESSAGES} from "../constants/message";
 import {ICustomerListQuery} from "../dto/customer-list-query.dto";
 
@@ -33,7 +33,7 @@ export class CustomerController {
         return res.status(200).json(result);
     }
 
-    async findById(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+    async findById(req: Request, res: Response): Promise<Response | void> {
         const id = Number(req.params.id);
         const customer = await this.customerService.findById(id);
 
