@@ -12,13 +12,15 @@ import {ICustomer} from "../dto/customer";
 import {PaginationHelper} from "../utils/pagination.helper";
 import {RowDataPacket} from "mysql2";
 import {ICustomerSummary} from "../dto/customer-summary.dto";
+import {AuditLogRepository} from "./audit-log.repository";
 
 @singleton()
 export class CustomerRepository implements ICustomerRepository {
     constructor(
         private readonly connection: ConnectionMysql,
         private readonly customerIdentityRepository: CustomerIdentityRepository,
-        private readonly customerAddressRepository: CustomerAddressRepository
+        private readonly customerAddressRepository: CustomerAddressRepository,
+        private readonly auditLogRepository: AuditLogRepository
     ) {
     }
 
@@ -41,7 +43,13 @@ export class CustomerRepository implements ICustomerRepository {
                     {...req.address, customerId}
                 );
             }
-
+            await this.auditLogRepository.createWithConnection(conn, {
+                entity: 'customer',
+                entity_id: customerId,
+                action: 'INSERT',
+                changed_by: req.customer.createdBy || 'system',
+                diff: {after: req.customer}
+            });
             await conn.commit();
             return customerId;
 

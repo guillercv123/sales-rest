@@ -11,4 +11,5 @@ export interface ICustomer{
     phoneMain?: string;
     status?: string;
     createAt?: Date;
+    createdBy?: string;
 }
