@@ -52,4 +52,13 @@ export class CustomerController {
             data: customer
         });
     }
+
+    async delete(req: Request, res: Response):Promise<Response | void>{
+        const id = Number(req.params.id);
+        await this.customerService.delete(id);
+        return res.status(200).json({
+            success: true,
+            message: MESSAGES.CUSTOMER.DELETE_SUCCESS
+        });
+    }
 }

@@ -87,6 +87,9 @@ export class CustomerRepository implements ICustomerRepository {
             const conditions: string[] = [];
             const params: any[] = [];
 
+            conditions.push('c.status = ?');
+            params.push('active');
+
             if (query.search) {
                 conditions.push(`(
                 c.first_name LIKE ? OR 
@@ -225,6 +228,27 @@ export class CustomerRepository implements ICustomerRepository {
             }
 
             return rows[0] as ICustomer;
+
+        } catch (error) {
+            throw MySQLErrorParser.parse(error);
+        } finally {
+            conn.release();
+        }
+    }
+
+    async delete(id: number): Promise<boolean> {
+        const conn = await this.connection.getConnection();
+
+        try {
+            const [result] = await conn.execute<ResultSetHeader>(
+                `UPDATE customer 
+             SET status = 'inactive', 
+                 updated_at = CURRENT_TIMESTAMP
+             WHERE customer_id = ? AND status = 'active'`,
+                [id]
+            );
+
+            return result.affectedRows > 0;
 
         } catch (error) {
             throw MySQLErrorParser.parse(error);

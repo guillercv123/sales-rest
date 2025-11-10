@@ -25,4 +25,8 @@ export class CustomerService implements ICustomerService {
     async findById(id: number): Promise<ICustomer | null>{
         return this.customerRepository.findById(id);
     }
+
+    async delete(id: number): Promise<boolean>{
+        return this.customerRepository.delete(id);
+    }
 }

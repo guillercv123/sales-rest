@@ -7,4 +7,5 @@ const controller = container.resolve(CustomerController);
 router.post('/', ControllerWrapper.wrap(controller, 'create'));
 router.get('/', ControllerWrapper.wrap(controller, 'findAll'));
 router.post('/:id', ControllerWrapper.wrap(controller, 'findById'));
+router.delete('/:id', ControllerWrapper.wrap(controller, 'delete'));
 export default router;

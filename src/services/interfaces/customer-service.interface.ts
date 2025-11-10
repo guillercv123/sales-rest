@@ -8,4 +8,5 @@ export interface ICustomerService{
     create(req: ICustomerCreateRequest): Promise<number>;
     findAll(query: ICustomerListQuery): Promise<IPaginatedResponse<ICustomerSummary>>;
     findById(id: number): Promise<ICustomer | null>;
+    delete(id: number): Promise<boolean>;
 }
