@@ -5,4 +5,6 @@ import {ControllerWrapper} from "../utils/controller.wrapper";
 const router = Router();
 const controller = container.resolve(CustomerController);
 router.post('/', ControllerWrapper.wrap(controller, 'create'));
+router.get('/', ControllerWrapper.wrap(controller, 'findAll'));
+router.get('/:id', ControllerWrapper.wrap(controller, 'findById'));
 export default router;

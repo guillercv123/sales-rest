@@ -18,7 +18,7 @@ app.use(express.json());
 app.use('/users', authGuard, UserRoutes);
 app.use('/login', LoginRoutes);
 app.use('/auth', authGuard, AuthRoutes);
-app.use('/customer',authGuard, CustomerRoute);
+app.use('/customers',authGuard, CustomerRoute);
 app.use('/menu',authGuard, MenuRoute);
 app.use('/type-document',authGuard, TypeDocumentRoute);
 app.use('/genero',authGuard, GeneroRoute);

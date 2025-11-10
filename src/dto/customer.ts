@@ -9,6 +9,6 @@ export interface ICustomer{
     tradeName?: string;
     emailMain?: string;
     phoneMain?: string;
-    status: string;
+    status?: string;
     createAt?: Date;
 }
