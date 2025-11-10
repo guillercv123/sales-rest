@@ -9,6 +9,7 @@ import GeneroRoute from "./routes/genero.route";
 import { authGuard } from './middlewares/auth.middleware';
 import MenuRoute from "./routes/menu.route";
 import CustomerRoute from "./routes/customer.route";
+import {errorHandler} from "./middlewares/error-handler.middleware";
 
 const app = express();
 app.use(cors());
@@ -21,4 +22,6 @@ app.use('/customer',authGuard, CustomerRoute);
 app.use('/menu',authGuard, MenuRoute);
 app.use('/type-document',authGuard, TypeDocumentRoute);
 app.use('/genero',authGuard, GeneroRoute);
+
+app.use(errorHandler);
 export default app;

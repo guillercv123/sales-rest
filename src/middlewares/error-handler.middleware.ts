@@ -6,11 +6,12 @@ export const errorHandler = (
     req: Request,
     res: Response,
     next: NextFunction
-) => {
+): void => {
+    // Error de base de datos
     if (error instanceof DatabaseError) {
         const statusCode = getStatusCode(error.code);
 
-        return res.status(statusCode).json({
+        res.status(statusCode).json({
             success: false,
             error: {
                 code: error.code,
@@ -19,11 +20,10 @@ export const errorHandler = (
                 value: error.value
             }
         });
+        return;
     }
 
-    // Error genérico
-    console.error('Unhandled error:', error);
-    return res.status(500).json({
+    res.status(500).json({
         success: false,
         error: {
             code: 'INTERNAL_SERVER_ERROR',

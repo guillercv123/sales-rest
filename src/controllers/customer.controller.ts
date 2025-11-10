@@ -8,17 +8,13 @@ export class CustomerController {
     constructor(private readonly customerService: CustomerService,) {}
 
     async create(req: Request, res: Response, next: NextFunction){
-        try{
-            const customerId = await this.customerService.create(req.body);
-            return res.status(201).json({
-                success: true,
-                data: {
-                    customerId,
-                    message: MESSAGES.CLIENT_REGISTERED_SUCCESS
-                }
-            });
-        }catch (error:any) {
-            next(error);
-        }
+        const customerId = await this.customerService.create(req.body);
+        return res.status(201).json({
+            success: true,
+            data: {
+                customerId,
+                message: MESSAGES.CLIENT_REGISTERED_SUCCESS
+            }
+        });
     }
 }
