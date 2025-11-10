@@ -10,6 +10,6 @@ const controller = container.resolve(SunatController);
  * @desc    Consulta datos de un RUC
  * @access  Public
  */
-router.post('/consultar/:ruc', ControllerWrapper.wrap(controller, 'consultarRuc'));
+router.get('/consultar/:ruc', ControllerWrapper.wrap(controller, 'consultarRuc'));
 
 export default router;
