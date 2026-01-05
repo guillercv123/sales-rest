@@ -1,5 +1,5 @@
 import {singleton} from "tsyringe";
-import {ICustomerRepository} from "./interfaces/customer-repository.interface";
+import {ICustomerRepository} from "./implements/customer-repository.interface";
 import {ConnectionMysql} from "../db/mysql";
 import {ICustomerCreateRequest} from "../dto/customer-create-request";
 import {CustomerIdentityRepository} from "./customer-identity.repository";

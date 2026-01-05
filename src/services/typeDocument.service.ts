@@ -1,6 +1,6 @@
 import { TypeDocumentRepository } from "../repositories/typeDocument.repository";
 import { ITypeDocument } from "../types/typeDocument.interface";
-import {ITypeDocumentService} from "./interfaces/typeDocument-service.interface";
+import {ITypeDocumentService} from "./implements/typeDocument-service.interface";
 import {inject, injectable} from "tsyringe";
 @injectable()
 export class TypeDocumentService implements ITypeDocumentService{

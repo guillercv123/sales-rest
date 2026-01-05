@@ -1,7 +1,7 @@
 import {GeneroRepository} from "../repositories/genero.repository";
 import {inject, injectable} from "tsyringe";
 import {IGenero} from "../types/genero.interface";
-import {IGeneroService} from "./interfaces/genero-service.interface";
+import {IGeneroService} from "./implements/genero-service.interface";
 @injectable()
 export class GeneroService implements IGeneroService{
 

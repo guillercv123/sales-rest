@@ -1,4 +1,4 @@
-import {IMenuRepository} from "./interfaces/menu-repository.interface";
+import {IMenuRepository} from "./implements/menu-repository.interface";
 import {singleton} from "tsyringe";
 import {ConnectionMysql} from "../db/mysql";
 import {IMenuCreateRequest} from "../types/menu-create-request.interface";

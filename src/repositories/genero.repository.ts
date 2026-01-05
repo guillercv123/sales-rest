@@ -1,6 +1,6 @@
 import {singleton} from "tsyringe";
 import {ConnectionMysql} from "../db/mysql"
-import {IGeneroRepository} from "./interfaces/genero-repository.interface";
+import {IGeneroRepository} from "./implements/genero-repository.interface";
 import {IGenero} from "../types/genero.interface";
 import { ResultSetHeader, RowDataPacket } from "mysql2";
 @singleton()

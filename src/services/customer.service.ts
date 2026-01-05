@@ -1,5 +1,5 @@
 import {inject, injectable} from "tsyringe";
-import {ICustomerService} from "./interfaces/customer-service.interface";
+import {ICustomerService} from "./implements/customer-service.interface";
 import {CustomerRepository} from "../repositories/customer.repository";
 import {ICustomerCreateRequest} from "../dto/customer-create-request";
 import {ICustomerListQuery} from "../dto/customer-list-query.dto";

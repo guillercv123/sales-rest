@@ -1,5 +1,5 @@
 import {singleton} from "tsyringe";
-import {IUserRepository} from "./interfaces/user-repository.interface";
+import {IUserRepository} from "./implements/user-repository.interface";
 import {ConnectionMysql} from "../db/mysql";
 import {User} from "../types/user.interface";
 import {RowDataPacket} from "mysql2";

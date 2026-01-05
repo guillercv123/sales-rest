@@ -1,5 +1,5 @@
 import {singleton} from "tsyringe";
-import {IAuditLogRepository} from "./interfaces/audit-log-repository.interface";
+import {IAuditLogRepository} from "./implements/audit-log-repository.interface";
 import {ConnectionMysql} from "../db/mysql";
 import {IAuditLog, IAuditLogCreate, IAuditLogQuery} from "../dto/audit-log.dto";
 import {PoolConnection, ResultSetHeader, RowDataPacket} from "mysql2/promise";

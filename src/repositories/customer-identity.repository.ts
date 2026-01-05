@@ -1,7 +1,7 @@
 import {singleton} from "tsyringe";
 import {ConnectionMysql} from "../db/mysql";
 import {ICustomerIdentity} from "../dto/customer-identity";
-import {ICustomerIdentityRepository} from "./interfaces/customer-identity-repository.interface";
+import {ICustomerIdentityRepository} from "./implements/customer-identity-repository.interface";
 import {PoolConnection, ResultSetHeader} from "mysql2/promise";
 import {MySQLErrorParser} from "../utils/mysql-error.parser";
 

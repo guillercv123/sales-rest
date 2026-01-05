@@ -1,6 +1,6 @@
 import {UserRepository} from "../repositories/user.repository";
 import {inject, injectable} from "tsyringe";
-import {IUserService} from "./interfaces/user-service.interface";
+import {IUserService} from "./implements/user-service.interface";
 @injectable()
 export class UserService implements IUserService{
     constructor(

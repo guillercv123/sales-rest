@@ -2,7 +2,7 @@ import {ConnectionMysql} from "../db/mysql";
 import {singleton} from "tsyringe";
 import { ITypeDocument } from "../types/typeDocument.interface";
 import { ResultSetHeader, RowDataPacket } from "mysql2";
-import {ITypeDocumentRepository} from "./interfaces/type-document-repository.interface";
+import {ITypeDocumentRepository} from "./implements/type-document-repository.interface";
 
 @singleton()
 export class TypeDocumentRepository implements ITypeDocumentRepository{

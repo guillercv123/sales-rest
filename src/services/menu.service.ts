@@ -1,5 +1,5 @@
 import {inject, injectable} from "tsyringe";
-import {IMenuService} from "./interfaces/menu-service.interface";
+import {IMenuService} from "./implements/menu-service.interface";
 import {MenuRepository} from "../repositories/menu.repository";
 import {IMenuCreateRequest} from "../types/menu-create-request.interface";
 
