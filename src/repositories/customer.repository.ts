@@ -180,12 +180,7 @@ export class CustomerRepository implements ICustomerRepository {
         conn: PoolConnection,
         customerId: number,
         requestAddresses: ICustomerAddress[]
-    ): Promise<{
-        created: number;
-        updated: number;
-        deleted: number;
-        hasChanges: boolean;
-    }> {
+    ): Promise<void> {
         let created = 0;
         let updated = 0;
         let deleted = 0;
@@ -232,16 +227,8 @@ export class CustomerRepository implements ICustomerRepository {
                 created++;
             }
         }
-
-        return {
-            created,
-            updated,
-            deleted,
-            hasChanges: created > 0 || updated > 0 || deleted > 0
-        };
     }
 
-// Método auxiliar para comparar si una dirección cambió
     private hasAddressChanged(existing: ICustomerAddress, requested: ICustomerAddress): boolean {
         return (
             existing.street !== requested.street ||
@@ -302,6 +289,9 @@ export class CustomerRepository implements ICustomerRepository {
             SELECT 
                 c.customer_id as customerId,
                 c.person_type_id as personTypeId,
+                (SELECT CONCAT(pt.description) FROM person_type pt 
+                        where pt.person_type_id = c.person_type_id
+                 LIMIT 1) as personType,
                 CASE 
                     WHEN c.person_type_id = 1 THEN CONCAT(c.first_name, ' ', COALESCE(c.middle_name, ''), ' ', c.last_name)
                     ELSE c.legal_name
@@ -350,6 +340,7 @@ export class CustomerRepository implements ICustomerRepository {
             const customers: ICustomerSummary[] = rows.map(row => ({
                 customerId: row.customerId,
                 personTypeId: row.personTypeId,
+                personType: row.personType,
                 fullName: row.fullName,
                 emailMain: row.emailMain,
                 phoneMain: row.phoneMain,

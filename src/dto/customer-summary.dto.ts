@@ -1,6 +1,7 @@
 export interface ICustomerSummary {
     customerId: number;
     personTypeId: number;
+    personType: string;
     fullName: string;
     emailMain: string | null;
     phoneMain: string | null;
