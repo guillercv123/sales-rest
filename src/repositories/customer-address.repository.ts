@@ -2,6 +2,8 @@ import {singleton} from "tsyringe";
 import {ConnectionMysql} from "../db/mysql";
 import {ICustomerAddress} from "../dto/customer-address";
 import {PoolConnection} from "mysql2/promise";
+import {ResultSetHeader, RowDataPacket} from "mysql2";
+import {MySQLErrorParser} from "../utils/mysql-error.parser";
 
 @singleton()
 export class CustomerAddressRepository{
@@ -19,14 +21,29 @@ export class CustomerAddressRepository{
         }
     }
 
+    async findByCustomerId(conn: PoolConnection, customerId: number): Promise<ICustomerAddress[]> {
+        try {
+            const [rows] = await conn.execute<RowDataPacket[]>(
+                `SELECT address_id as addressId, customer_id as customerId, street, reference, 
+                    postal_code as postalCode, is_primary as isPrimary, ubigeo_code as ubigeo
+             FROM customer_address 
+             WHERE customer_id = ?`,
+                [customerId]
+            );
+            return rows as ICustomerAddress[];
+        } catch (error) {
+            throw MySQLErrorParser.parse(error);
+        }
+    }
+
 
     async createWithConnection(conn: PoolConnection, req: ICustomerAddress): Promise<number> {
         const [result]: any = await conn.execute(
             `INSERT INTO customer_address (
-                customer_id, street,
+                customer_id,
                 street, reference,
                 postal_code, is_primary,
-                ubigeo_code) VALUES (?,?,?,?,?,?,?);`,
+                ubigeo_code) VALUES (?,?,?,?,?,?);`,
             [
                 req.customerId,
                 req.street,
@@ -37,5 +54,46 @@ export class CustomerAddressRepository{
             ]
         );
         return result.insertId;
+    }
+
+    async updateWithConnection(conn: PoolConnection, addressId: number | undefined, req: ICustomerAddress): Promise<void> {
+        const [result] = await conn.execute<ResultSetHeader>(
+            `UPDATE customer_address 
+         SET customer_id = ?,
+             street = ?,
+             reference = ?,
+             postal_code = ?,
+             is_primary = ?,
+             ubigeo_code = ?
+         WHERE address_id = ?`,
+            [
+                req.customerId,
+                req.street,
+                req.reference,
+                req.postalCode,
+                req.isPrimary,
+                req.ubigeo,
+                addressId
+            ]
+        );
+
+        if (result.affectedRows === 0) {
+            throw new Error(`Customer address with id ${addressId} not found`);
+        }
+    }
+
+    async deleteWithConnection(conn: PoolConnection, addressId: number | undefined): Promise<void> {
+        try {
+            const [result] = await conn.execute<ResultSetHeader>(
+                `DELETE FROM customer_address WHERE address_id = ?`,
+                [addressId]
+            );
+
+            if (result.affectedRows === 0) {
+                throw new Error(`Customer address with id ${addressId} not found`);
+            }
+        } catch (error) {
+            throw MySQLErrorParser.parse(error);
+        }
     }
 }

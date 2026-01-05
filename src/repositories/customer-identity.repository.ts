@@ -38,4 +38,32 @@ export class CustomerIdentityRepository implements ICustomerIdentityRepository {
             throw MySQLErrorParser.parse(error);
         }
     }
+
+    async updateWithConnection(conn: PoolConnection, identityId: number | undefined, req: ICustomerIdentity): Promise<void> {
+        try {
+            const [result] = await conn.execute<ResultSetHeader>(
+                `UPDATE customer_identity
+                 SET customer_id = ?,
+                     type_document_id = ?,
+                     id_number = ?,
+                     is_primary = ?
+                 WHERE identity_id = ?`,
+                [
+                    req.customerId,
+                    req.typeDocumentId,
+                    req.idNumber,
+                    req.isPrimary ?? true,
+                    identityId
+                ]
+            );
+
+            if (result.affectedRows === 0) {
+                throw new Error(`Customer identity with id ${identityId} not found`);
+            }
+        } catch (error) {
+            throw MySQLErrorParser.parse(error);
+        }
+    }
+
+
 }

@@ -3,6 +3,7 @@ import {autoInjectable} from "tsyringe";
 import {Request, Response} from 'express';
 import {MESSAGES} from "../constants/message";
 import {ICustomerListQuery} from "../dto/customer-list-query.dto";
+import {ICustomer} from "../types/customer.interface";
 
 @autoInjectable()
 export class CustomerController {
@@ -17,6 +18,18 @@ export class CustomerController {
                 message: MESSAGES.CLIENT_REGISTERED_SUCCESS
             }
         });
+    }
+
+    async update(req: Request, res: Response){
+        const id = Number(req.params.id);
+        const customerId = await this.customerService.update(req.body,id);
+        return res.status(200).json({
+            success: true,
+            data: {
+                customerId,
+                message: MESSAGES.CUSTOMER.UPDATE_SUCCESS
+            }
+        })
     }
 
     async findAll(req: Request, res: Response){

@@ -11,7 +11,8 @@ export const MESSAGES = {
     LOGIN_SUCCESS: "Login exitoso",
     CLIENT_REGISTERED_SUCCESS: "Cliente registrado correctamente.",
     CUSTOMER: {
-        DELETE_SUCCESS : "Cliente eliminado correctamente"
+        DELETE_SUCCESS : "Cliente eliminado correctamente",
+        UPDATE_SUCCESS : "Cliente actualizado correctamente"
     },
     TYPE_DOCUMENT : {
         TYPE_DOCUMENT_REGISTERED_SUCCESS: "Tipo de documento registrado correctamente.",

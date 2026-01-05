@@ -5,5 +5,5 @@ import {ICustomerAddress} from "./customer-address";
 export interface ICustomerCreateRequest {
     customer: ICustomer,
     identity: ICustomerIdentity,
-    address: ICustomerAddress
+    address: ICustomerAddress[]
 }

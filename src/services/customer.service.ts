@@ -18,6 +18,10 @@ export class CustomerService implements ICustomerService {
         return this.customerRepository.create(req);
     }
 
+    async update(req: ICustomerCreateRequest, customerId: number){
+        return this.customerRepository.update(req, customerId);
+    }
+
     async findAll(query: ICustomerListQuery):Promise<IPaginatedResponse<ICustomerSummary>>{
         return this.customerRepository.findAll(query)
     }

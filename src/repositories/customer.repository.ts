@@ -13,6 +13,7 @@ import {PaginationHelper} from "../utils/pagination.helper";
 import {RowDataPacket} from "mysql2";
 import {ICustomerSummary} from "../dto/customer-summary.dto";
 import {AuditLogRepository} from "./audit-log.repository";
+import {ICustomerAddress} from "../dto/customer-address";
 
 @singleton()
 export class CustomerRepository implements ICustomerRepository {
@@ -37,11 +38,13 @@ export class CustomerRepository implements ICustomerRepository {
                 {...req.identity, customerId}
             );
 
-            if (req.address) {
-                await this.customerAddressRepository.createWithConnection(
-                    conn,
-                    {...req.address, customerId}
-                );
+            if (req.address && req.address.length > 0) {
+                for (const address of req.address) {
+                    await this.customerAddressRepository.createWithConnection(
+                        conn,
+                        { ...address, customerId }
+                    );
+                }
             }
             await this.auditLogRepository.createWithConnection(conn, {
                 entity: 'customer',
@@ -61,12 +64,58 @@ export class CustomerRepository implements ICustomerRepository {
         }
     }
 
+    async update(req: ICustomerCreateRequest, customerId: number): Promise<number> {
+        const conn = await this.connection.getConnection();
+        try {
+            await conn.beginTransaction();
+
+            await this.updateCustomer(conn, customerId, req.customer);
+
+            if (req.identity && req.identity.identityId) {
+                await this.customerIdentityRepository.updateWithConnection(
+                    conn,
+                    req.identity.identityId,
+                    { ...req.identity, customerId }
+                );
+            } else if (req.identity) {
+                await this.customerIdentityRepository.createWithConnection(
+                    conn,
+                    { ...req.identity, customerId }
+                );
+            }
+
+            await this.syncCustomerAddresses(conn, customerId, req.address || []);
+
+            await this.auditLogRepository.createWithConnection(conn, {
+                entity: 'customer',
+                entity_id: customerId,
+                action: 'UPDATE',
+                changed_by: req.customer.updatedBy || req.customer.createdBy || 'system',
+                diff: {
+                    after: {
+                        customer: req.customer,
+                        identity: req.identity,
+                        addresses: req.address || []
+                    }
+                }
+            });
+
+            await conn.commit();
+            return customerId;
+        } catch (error) {
+            await conn.rollback();
+            throw MySQLErrorParser.parse(error);
+        } finally {
+            conn.release();
+        }
+    }
+
     private async insertCustomer(conn: PoolConnection, customer: any): Promise<number> {
         try {
             const [result] = await conn.execute<ResultSetHeader>(
                 `INSERT INTO customer (person_type_id, first_name, middle_name, last_name,
-                                       birth_date, legal_name, trade_name, email_main, phone_main)
-                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                                       birth_date, legal_name, trade_name, email_main, phone_main, created_at, created_by)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                 [
                     customer.personTypeId,
                     customer.firstName ?? null,
@@ -76,14 +125,132 @@ export class CustomerRepository implements ICustomerRepository {
                     customer.legalName ?? null,
                     customer.tradeName ?? null,
                     customer.emailMain ?? null,
-                    customer.phoneMain ?? null
+                    customer.phoneMain ?? null,
+                    customer.createdAt ?? null,
+                    customer.createdBy ?? null
                 ]
             );
             return result.insertId;
         }catch(error) {
             throw MySQLErrorParser.parse(error);
         }
-}
+    }
+
+    private async updateCustomer(conn: PoolConnection, customerId: number, customer: any): Promise<number> {
+        try {
+            const [result] = await conn.execute<ResultSetHeader>(
+                `UPDATE customer
+                 SET person_type_id = ?,
+                     first_name = ?,
+                     middle_name = ?,
+                     last_name = ?,
+                     birth_date = ?,
+                     legal_name = ?,
+                     trade_name = ?,
+                     email_main = ?,
+                     phone_main = ?,
+                     updated_by = ?
+                 WHERE customer_id = ?`,
+                [
+                    customer.personTypeId,
+                    customer.firstName ?? null,
+                    customer.middleName ?? null,
+                    customer.lastName ?? null,
+                    customer.birthDate ?? null,
+                    customer.legalName ?? null,
+                    customer.tradeName ?? null,
+                    customer.emailMain ?? null,
+                    customer.phoneMain ?? null,
+                    customer.updatedBy ?? null,
+                    customerId
+                ]
+            );
+
+            if (result.affectedRows === 0) {
+                throw new Error(`Customer with id ${customerId} not found`);
+            }
+
+            return result.affectedRows;
+        } catch(error) {
+            throw MySQLErrorParser.parse(error);
+        }
+    }
+
+    private async syncCustomerAddresses(
+        conn: PoolConnection,
+        customerId: number,
+        requestAddresses: ICustomerAddress[]
+    ): Promise<{
+        created: number;
+        updated: number;
+        deleted: number;
+        hasChanges: boolean;
+    }> {
+        let created = 0;
+        let updated = 0;
+        let deleted = 0;
+
+        // Obtener direcciones actuales en BD
+        const existingAddresses = await this.customerAddressRepository.findByCustomerId(conn, customerId);
+        const existingIds = existingAddresses.map(addr => addr.addressId);
+
+        // IDs que vienen en el request
+        const requestIds = requestAddresses
+            .filter(addr => addr.addressId)
+            .map(addr => addr.addressId!);
+
+        // 1. ELIMINAR: Direcciones que existen en BD pero NO vienen en el request
+        // @ts-ignore
+        const idsToDelete = existingIds.filter(id => !requestIds.includes(id));
+        for (const addressId of idsToDelete) {
+            const wasDeleted = await this.customerAddressRepository.deleteWithConnection(conn, addressId);
+            // @ts-ignore
+            if (wasDeleted) deleted++;
+        }
+
+        // 2. ACTUALIZAR o CREAR: Procesar cada dirección del request
+        for (const address of requestAddresses) {
+            if (address.addressId) {
+                // ACTUALIZAR solo si hay cambios reales
+                const existingAddress = existingAddresses.find(addr => addr.addressId === address.addressId);
+
+                if (existingAddress && this.hasAddressChanged(existingAddress, address)) {
+                    const wasUpdated = await this.customerAddressRepository.updateWithConnection(
+                        conn,
+                        address.addressId,
+                        { ...address, customerId }
+                    );
+                    // @ts-ignore
+                    if (wasUpdated) updated++;
+                }
+            } else {
+                // CREAR nueva dirección
+                await this.customerAddressRepository.createWithConnection(
+                    conn,
+                    { ...address, customerId }
+                );
+                created++;
+            }
+        }
+
+        return {
+            created,
+            updated,
+            deleted,
+            hasChanges: created > 0 || updated > 0 || deleted > 0
+        };
+    }
+
+// Método auxiliar para comparar si una dirección cambió
+    private hasAddressChanged(existing: ICustomerAddress, requested: ICustomerAddress): boolean {
+        return (
+            existing.street !== requested.street ||
+            (existing.reference ?? null) !== (requested.reference ?? null) ||
+            (existing.postalCode ?? null) !== (requested.postalCode ?? null) ||
+            (existing.isPrimary ?? false) !== (requested.isPrimary ?? false) ||
+            (existing.ubigeo ?? null) !== (requested.ubigeo ?? null)
+        );
+    }
 
     async findAll(query: ICustomerListQuery): Promise<IPaginatedResponse<ICustomerSummary>> {
         const conn = await this.connection.getConnection();

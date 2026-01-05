@@ -5,6 +5,7 @@ import {ControllerWrapper} from "../utils/controller.wrapper";
 const router = Router();
 const controller = container.resolve(CustomerController);
 router.post('/', ControllerWrapper.wrap(controller, 'create'));
+router.put('/:id', ControllerWrapper.wrap(controller, 'update'));
 router.get('/', ControllerWrapper.wrap(controller, 'findAll'));
 router.post('/:id', ControllerWrapper.wrap(controller, 'findById'));
 router.delete('/:id', ControllerWrapper.wrap(controller, 'delete'));

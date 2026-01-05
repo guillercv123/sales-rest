@@ -12,6 +12,10 @@ export interface ICustomer{
     emailMain: string;
     phoneMain: string;
     status: string;
-    createAt: Date;
-    updateAt: Date;
+    createdAt: Date;
+    createdBy: string;
+    updatedAt: Date;
+    updatedBy: string;
+    deletedAt: Date;
+    deletedBy: string;
 }
